@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
 const flash = require('connect-flash');
 const bodyParser = require('body-parser');
 
@@ -19,10 +18,11 @@ const sessionOptions = {
   port: process.env.MYSQLPORT ? Number(process.env.MYSQLPORT) : 3306,
   user: process.env.MYSQLUSER || 'root',
   password: process.env.MYSQLPASSWORD || '',
-  database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || 'shopping_db'
+  database: process.env.MYSQLDATABASE || 'shopping_db'
 };
 
 const sessionStore = new MySQLStore(sessionOptions);
+
 
 /**
  * 2. CONFIG EXPRESS
@@ -40,11 +40,11 @@ app.use(bodyParser.json());
 app.use(session({
   key: 'session_cookie_name',
   secret: 'una_clave_secreta_aqui',
-  store: sessionStore,
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 1000 * 60 * 60 * 2 } // 2 horas
+  cookie: { maxAge: 1000 * 60 * 60 * 2 }
 }));
+
 
 app.use(flash());
 
