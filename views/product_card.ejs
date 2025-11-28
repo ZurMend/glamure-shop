@@ -1,0 +1,25 @@
+<div class="product-card">
+  <% 
+    // Asegurarnos de que la imagen tenga un valor válido
+    const imageFile = (product.image || '').trim();
+  %>
+
+  <img 
+    src="/images/<%= imageFile %>" 
+    alt="<%= product.title %>" 
+    onerror="this.src='/images/default.jpg';"
+  >
+
+  <h2><%= product.title %></h2>
+
+  <p class="price">
+    $<%= Number(product.price || 0).toFixed(2) %> MXN
+  </p>
+
+  <p class="description"><%= product.description %></p>
+
+  <form action="/cart/add" method="post">
+    <input type="hidden" name="productId" value="<%= product.id %>">
+    <button type="submit">Agregar al carrito</button>
+  </form>
+</div>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Iniciar sesión - GLAMURE</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <nav>
+    <a href="/">Inicio</a>
+    <a href="/login">Iniciar sesión</a>
+    <a href="/register">Registro</a>
+    <% if (user) { %>
+      <a href="/history">Historial</a>
+      <a href="/cart">Carrito</a>
+      <span>Hola, <%= user.name %></span>
+      <a href="/logout">Salir</a>
+    <% } %>
+  </nav>
+
+  <% if (messages && messages.error) { %>
+    <div class="alert error"><%= messages.error %></div>
+  <% } %>
+
+  <% if (messages && messages.success) { %>
+    <div class="alert success"><%= messages.success %></div>
+  <% } %>
+
+  <main class="auth-container">
+    <h1>Iniciar sesión</h1>
+    <form action="/login" method="post" class="auth-form">
+      <label>
+        Correo:
+        <input name="email" type="email" placeholder="correo@ejemplo.com" required />
+      </label>
+
+      <label>
+        Contraseña:
+        <input name="password" type="password" placeholder="********" required />
+      </label>
+
+      <button type="submit">Entrar</button>
+    </form>
+
+    <p>¿No tienes cuenta? <a href="/register">Regístrate aquí</a></p>
+  </main>
+
+  <script src="/js/cart.js"></script>
+</body>
+</html>

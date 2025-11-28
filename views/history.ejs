@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Historial de compras - GLAMURE</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <nav>
+    <a href="/">Inicio</a>
+    <% if (user) { %>
+      <a href="/history">Historial</a>
+      <a href="/cart">Carrito</a>
+      <span>Hola, <%= user.name %></span>
+      <a href="/logout">Salir</a>
+    <% } else { %>
+      <a href="/login">Iniciar sesión</a>
+      <a href="/register">Registro</a>
+    <% } %>
+  </nav>
+
+  <% if (messages && messages.error) { %>
+    <div class="alert error"><%= messages.error %></div>
+  <% } %>
+  <% if (messages && messages.success) { %>
+    <div class="alert success"><%= messages.success %></div>
+  <% } %>
+
+  <main class="history-container">
+    <h1>Historial de compras</h1>
+
+    <% if (!orders || orders.length === 0) { %>
+      <p>No tienes compras registradas.</p>
+      <a href="/" class="btn-link">Ir a comprar</a>
+    <% } else { %>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Productos</th>
+            <th>Total</th>
+            <th>Ticket</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% orders.forEach(order => { %>
+            <tr>
+              <td>
+                <%= order.created_at && order.created_at.toLocaleString
+                      ? order.created_at.toLocaleString()
+                      : order.created_at %>
+              </td>
+              <td>
+                <ul>
+                  <% order.items.forEach(item => { 
+                       const priceNum = Number(item.price) || 0;
+                  %>
+                    <li>
+                      <%= item.item_name %> x <%= item.quantity %>
+                      ($<%= priceNum.toFixed(2) %>)
+                    </li>
+                  <% }) %>
+                </ul>
+              </td>
+              <td>
+                <% const totalNum = Number(order.total) || 0; %>
+                $<%= totalNum.toFixed(2) %>
+              </td>
+              <td>
+                <a href="/order/<%= order.id %>/ticket" target="_blank">Ver ticket</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </main>
+
+  <script src="/js/cart.js"></script>
+</body>
+</html>

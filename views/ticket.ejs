@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Ticket de compra #<%= order.id %></title>
+  <link rel="stylesheet" href="/css/ticket.css" />
+</head>
+<body>
+  <div class="ticket">
+    <h1>GLAMURE</h1>
+    <p><strong>Ticket de compra</strong></p>
+    <p>Fecha: <%= order.created_at.toLocaleString ? order.created_at.toLocaleString() : order.created_at %></p>
+    <p>Cliente: <%= user.name %> (<%= user.email %>)</p>
+    <hr />
+
+    <table class="ticket-table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cant.</th>
+          <th>Precio</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% order.items.forEach(item => { %>
+          <tr>
+            <td><%= item.name %></td>
+            <td><%= item.quantity %></td>
+            <td>$<%= item.price.toFixed(2) %></td>
+            <td>$<%= (item.price * item.quantity).toFixed(2) %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <hr />
+    <h2>Total: $<%= order.total.toFixed(2) %></h2>
+
+    <p>¡Gracias por tu compra!</p>
+  </div>
+</body>
+</html>

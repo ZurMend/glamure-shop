@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Carrito de compras</title>
+  <link rel="stylesheet" href="/css/styles.css"><!-- ajusta ruta si tu css se llama distinto -->
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">Inicio</a>
+      <a href="/cart">Carrito</a>
+      <a href="/history">Historial</a>
+      <% if (user) { %>
+        <span>Hola, <%= user.name %></span>
+        <a href="/logout">Salir</a>
+      <% } else { %>
+        <a href="/login">Iniciar sesión</a>
+      <% } %>
+    </nav>
+  </header>
+
+  <% if (messages.error) { %>
+    <div class="alert alert-error">
+      <% messages.error.forEach(msg => { %>
+        <p><%= msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <% if (messages.success) { %>
+    <div class="alert alert-success">
+      <% messages.success.forEach(msg => { %>
+        <p><%= msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <main class="container">
+    <h1>Tu carrito</h1>
+
+    <% if (!cartItems || cartItems.length === 0) { %>
+      <p>Tu carrito está vacío.</p>
+      <a href="/">Seguir comprando</a>
+    <% } else { %>
+      <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% cartItems.forEach(item => { %>
+            <tr>
+              <td><%= item.name %></td>
+              <td>$<%= Number(item.price).toFixed(2) %></td>
+              <td><%= item.quantity %></td>
+              <td>$<%= (Number(item.price) * item.quantity).toFixed(2) %></td>
+              <td>
+                <form action="/cart/remove" method="post" style="display:inline;">
+                  <input type="hidden" name="productId" value="<%= item.id %>">
+                  <button type="submit">Quitar</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+
+      <h2>Total: $<%= total.toFixed(2) %></h2>
+
+      <form action="/cart/checkout" method="post">
+        <button type="submit">Comprar</button>
+      </form>
+    <% } %>
+  </main>
+</body>
+</html>

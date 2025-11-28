@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>GLAMURE - Productos</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <nav>
+    <a href="/">Inicio</a>
+    <% if (user) { %>
+      <a href="/history">Historial</a>
+      <a href="/cart">Carrito</a>
+      <span>Hola, <%= user.name %></span>
+      <a href="/logout">Salir</a>
+    <% } else { %>
+      <a href="/login">Iniciar sesión</a>
+      <a href="/register">Registro</a>
+    <% } %>
+  </nav>
+
+  <% if (messages.error) { %>
+    <div class="alert error"><%= messages.error %></div>
+  <% } %>
+  <% if (messages.success) { %>
+    <div class="alert success"><%= messages.success %></div>
+  <% } %>
+
+  <h1>Productos</h1>
+  <div class="products-grid">
+    <% products.forEach(product => { %>
+      <%- include('product_card', { product }) %>
+    <% }) %>
+  </div>
+
+  <script src="/js/cart.js"></script>
+</body>
+</html>
