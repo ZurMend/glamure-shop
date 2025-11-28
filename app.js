@@ -6,17 +6,20 @@ const flash = require('connect-flash');
 const bodyParser = require('body-parser');
 
 const app = express();
+
+// Railway te da el puerto en process.env.PORT
 const PORT = process.env.PORT || 3000;
 
 /**
  * 1. CONFIGURACIÓN DEL STORE DE SESIÓN
+ *    ⚠️ Importante: usar las mismas variables que en db.js
  */
 const sessionOptions = {
-  host: 'localhost',
-  port: 3306,
-  user: 'root',      // tu usuario de MySQL
-  password: '',      // tu password de MySQL (si no tienes, vacío)
-  database: 'shopping_db'
+  host: process.env.MYSQLHOST || 'localhost',
+  port: process.env.MYSQLPORT ? Number(process.env.MYSQLPORT) : 3306,
+  user: process.env.MYSQLUSER || 'root',
+  password: process.env.MYSQLPASSWORD || '',
+  database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || 'shopping_db'
 };
 
 const sessionStore = new MySQLStore(sessionOptions);
@@ -71,5 +74,5 @@ app.use('/', orderRoutes);
  * 6. INICIAR SERVER
  */
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
